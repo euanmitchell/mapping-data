@@ -1,0 +1,56 @@
+This file contains basic commands to set up a new virtual environment and install the scrapy package:
+
+cd Dropbox/MyStuff/Duke Data Engineering Course/scraping
+
+python3 -m venv scrapy
+
+source scrapy/bin/activate
+
+which pip (confirm using pip in this venv?)
+
+pip install scrapy
+
+which scrapy
+
+scrapy --help
+
+scrapy startproject {name} 
+
+cd {name}
+
+scrapy genspider {spider_name} {domain_name}
+
+# Should now have a python file in ./{name}/spiders/{spider_name}.py
+
+demo site: https://cve.mitre.org/data/refs/refmap/source-EXPLOIT-DB.html
+
+scrapy shell https://cve.mitre.org/data/refs/refmap/source-EXPLOIT-DB.html
+
+# Can now use xpath within this interactive shell to explore the object that came back from scrapy shell
+
+# To look for tables within the HTML: response.xpath('//table')
+
+# At the time of the demo the fourth table is the one we want: table = response.xpath('//table')[3]
+
+# Confirm by counting the rows (Should be > 10k): len(table.xpath('tr'))
+
+# What's in the table: row = table.xpath('tr')[10]
+
+# Now we can see the structure of a single row and we see the <td> item we want with the id
+
+# Look at the text in the table: row.xpath('td//text()')
+
+# What is in the first cell: id = row.xpath('td//text()')[0].extract()
+
+# id is now a string of the text in the first cell in this row of the table - progress!
+
+# The third <td> should have the CVE number: cve = row.xpath('td//text()')[2].extract()
+
+# Iterate through the table: 
+
+for row in table.xpath('//tr'):
+    try:
+        print(row.xpath('td//text()')[0].extract())
+    except:
+        IndexError:
+            pass
