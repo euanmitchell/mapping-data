@@ -54,3 +54,6 @@ for row in table.xpath('//tr'):
     except:
         IndexError:
             pass
+
+# Can get different parts within a tag or nested tag: table.xpath('tr')[0].xpath('td/a/@href).extract()
+(would get the text of the hyperref)
